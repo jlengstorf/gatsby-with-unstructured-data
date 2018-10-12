@@ -12,21 +12,25 @@ exports.createPages = async ({ actions: { createPage } }) => {
     context: { allPokemon: pokemon.map(({ data }) => data) }
   });
 
-  pokemon.forEach(({ data: pokemon }) => {
-    createPage({
-      path: `/pokemon/${pokemon.name}`,
-      component: require.resolve('./src/templates/pokemon.js'),
-      context: { pokemon }
-    });
-
-    pokemon.abilities.map(async ({ ability: { name } }) => {
-      const { data: ability } = await get(`/ability/${name}`);
-
-      createPage({
-        path: `/pokemon/${pokemon.name}/ability/${name}`,
-        component: require.resolve('./src/templates/ability.js'),
-        context: { pokemon, ability }
+  await Promise.all(
+    pokemon.map(async ({ data: pokemon }) => {
+      await createPage({
+        path: `/pokemon/${pokemon.name}`,
+        component: require.resolve('./src/templates/pokemon.js'),
+        context: { pokemon }
       });
-    });
-  });
+
+      await Promise.all(
+        pokemon.abilities.map(async ({ ability: { name } }) => {
+          const { data: ability } = await get(`/ability/${name}`);
+
+          await createPage({
+            path: `/pokemon/${pokemon.name}/ability/${name}`,
+            component: require.resolve('./src/templates/ability.js'),
+            context: { pokemon, ability }
+          });
+        })
+      );
+    })
+  );
 };
