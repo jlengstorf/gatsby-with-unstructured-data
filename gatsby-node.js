@@ -14,24 +14,21 @@ const getPokemonData = names =>
         })
       );
 
-      console.log(abilities);
-
-      return {
-        ...pokemon,
-        abilities
-      };
+      return { ...pokemon, abilities };
     })
   );
 
 exports.createPages = async ({ actions: { createPage } }) => {
   const allPokemon = await getPokemonData(['pikachu', 'charizard', 'squirtle']);
 
+  // Create a page that lists all Pokémon.
   createPage({
     path: `/`,
     component: require.resolve('./src/templates/all-pokemon.js'),
     context: { allPokemon }
   });
 
+  // Create a page for each Pokémon.
   allPokemon.map(pokemon => {
     createPage({
       path: `/pokemon/${pokemon.name}/`,
@@ -39,6 +36,7 @@ exports.createPages = async ({ actions: { createPage } }) => {
       context: { pokemon }
     });
 
+    // Create a page for each ability of the current Pokémon.
     pokemon.abilities.map(ability => {
       createPage({
         path: `/pokemon/${pokemon.name}/ability/${ability.name}/`,
