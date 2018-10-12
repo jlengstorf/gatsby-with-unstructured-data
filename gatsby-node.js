@@ -14,7 +14,7 @@ exports.createPages = async ({ actions: { createPage } }) => {
 
   await Promise.all(
     pokemon.map(async ({ data: pokemon }) => {
-      await createPage({
+      createPage({
         path: `/pokemon/${pokemon.name}`,
         component: require.resolve('./src/templates/pokemon.js'),
         context: { pokemon }
@@ -24,7 +24,7 @@ exports.createPages = async ({ actions: { createPage } }) => {
         pokemon.abilities.map(async ({ ability: { name } }) => {
           const { data: ability } = await get(`/ability/${name}`);
 
-          await createPage({
+          createPage({
             path: `/pokemon/${pokemon.name}/ability/${name}`,
             component: require.resolve('./src/templates/ability.js'),
             context: { pokemon, ability }
