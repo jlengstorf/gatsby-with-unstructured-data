@@ -7,7 +7,7 @@ export default ({ pageContext: { pokemon } }) => (
     <img src={pokemon.sprites.front_default} alt={pokemon.name} />
     <h2>Abilities</h2>
     <ul>
-      {pokemon.abilities.map(({ ability }) => (
+      {pokemon.abilities.map(ability => (
         <li key={ability.name}>
           <Link to={`./pokemon/${pokemon.name}/ability/${ability.name}`}>
             {ability.name}
