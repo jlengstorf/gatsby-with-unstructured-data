@@ -53,7 +53,4 @@ exports.sourceNodes = async ({ actions }) => {
 
   // Process data into nodes using our helper.
   allPokemon.forEach(pokemon => createNode(processPokemon(pokemon)));
-
-  // Done! Return.
-  return;
 };
