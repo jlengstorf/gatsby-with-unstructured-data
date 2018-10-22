@@ -1,44 +1,21 @@
-# Can you use Gatsby without GraphQL?
+# Using Gatsby's GraphQL integration layer
 
-Yes!
+This branch uses Gatsby's GraphQL integration layer. It's intended as a useful comparison to the [master branch](https://github.com/jlengstorf/gatsby-with-unstructured-data/tree/master) of this repo, which illustrates how to use Gatsby "unstructured data" (or, without making use of the GraphQL integration layer).
 
-This is a small example that loads data from the [PokéAPI](https://www.pokeapi.co/)’s REST endpoints, then creates pages (and nested pages) using [Gatsby’s `createPages` API](https://www.gatsbyjs.org/docs/node-apis/#createPages).
+## Sourcing data using a local plugin
 
-## What are the trade-offs?
+This example uses a [local plugin](https://www.gatsbyjs.org/docs/plugins/#loading-plugins-from-your-local-plugins-folder) to:
 
-### The upsides of using REST:
+1. Load data from the PokéAPI’s REST endpoints.
+2. Process that data into Gatsby's node format
+3. Use the [`createNode` action](https://www.gatsbyjs.org/docs/actions/#createNode) to create nodes.
 
-- The approach is familiar and comfortable, _especially_ if you’re new to GraphQL
-- There’s no intermediate step: you fetch some data, then build pages with it
+The [`gatsby-node.js` file](https://github.com/jlengstorf/gatsby-with-unstructured-data/blob/using-gatsby-data-layer/plugins/gatsby-source-pokeapi/gatsby-node.js) of the local plugin includes detailed comments on the process.
 
-### The downsides of using REST:
+## Querying data in templates from local GraphQL server
 
-- There are lots of calls required, and each nested call relies on data from the previous call; this won’t scale well
-- All of the data for the page needs to be explicitly passed into the context object, which makes it a little harder to understand what data is being passed to the page component
-- The relationships between items are harder to understand; we need to make three separate requests, resulting in three separate data objects that we have to manually combine in the front-end
+Once the data is successfully available from the local GraphQL server (via the process above), React components in a Gatsby site can query against that local GraphQL server to build your pages.
 
-## What would this look like using GraphQL?
+Each page template from the master branch (for example, [`all-pokemon.js`](https://github.com/jlengstorf/gatsby-with-unstructured-data/blob/master/src/templates/all-pokemon.js)) has a [corresponding file in this branch](https://github.com/jlengstorf/gatsby-with-unstructured-data/blob/using-gatsby-data-layer/src/templates/all-pokemon.js) showing the GraphQL approach.
 
-Great question! There’s not a stable Pokémon GraphQL API that I’ve seen, but if there was, the query might look like this:
-
-```jsx
-const data = await graphql(`
-  {
-    Pokemon {
-      edges {
-        node {
-          name
-          abilities {
-            name
-            effect
-          }
-        }
-      }
-    }
-  }
-`);
-
-// Use createPage to turn the data into pages, just like the REST version.
-```
-
-This one query accomplishes the same thing as the three different REST calls, and it shows more clearly how the data is related (e.g. each Pokémon has abilities).
+Compare and contrast!
