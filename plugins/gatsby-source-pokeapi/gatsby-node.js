@@ -24,8 +24,8 @@ exports.sourceNodes = async ({ actions }) => {
   const { createNodeFactory } = createNodeHelpers({
     typePrefix: "Pokeapi"
   });
-  const formAbilityNode = createNodeFactory("Ability");
-  const formPokemonNode = createNodeFactory("Pokemon");
+  const prepareAbilityNode = createNodeFactory("Ability");
+  const preparePokemonNode = createNodeFactory("Pokemon");
 
   // Get all our pokemon data
   const allPokemon = await getPokemonData(["pikachu", "charizard", "squirtle"]);
@@ -34,7 +34,7 @@ exports.sourceNodes = async ({ actions }) => {
   const processPokemon = pokemon => {
     // Set up each ability as a node
     const abilityNodes = pokemon.abilities.map(abilityData =>
-      formAbilityNode(abilityData)
+      prepareAbilityNode(abilityData)
     );
 
     // Actually create the "Ability" nodes for given pokemon
@@ -43,7 +43,7 @@ exports.sourceNodes = async ({ actions }) => {
     });
 
     // Create the "Pokemon" node for given pokemon
-    const pokemonNode = formPokemonNode(pokemon);
+    const pokemonNode = preparePokemonNode(pokemon);
 
     // Attach an array of "Ability" node ids to `abilities___NODE` in the Pokémon
     pokemonNode.abilities___NODE = abilityNodes.map(node => node.id);
