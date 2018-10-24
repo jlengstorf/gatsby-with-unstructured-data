@@ -6,9 +6,9 @@ This branch uses Gatsby's GraphQL integration layer. It's intended as a useful c
 
 This example uses a [local plugin](https://www.gatsbyjs.org/docs/plugins/#loading-plugins-from-your-local-plugins-folder) to:
 
-1. Load data from the PokéAPI’s REST endpoints.
+1. Load data from the PokéAPI’s REST endpoints
 2. Process that data into Gatsby's node format
-3. Use the [`createNode` action](https://www.gatsbyjs.org/docs/actions/#createNode) to create nodes.
+3. Use the [`createNode` action](https://www.gatsbyjs.org/docs/actions/#createNode) to add the data to Gatsby’s GraphQL layer
 
 The [`gatsby-node.js` file](https://github.com/jlengstorf/gatsby-with-unstructured-data/blob/using-gatsby-data-layer/plugins/gatsby-source-pokeapi/gatsby-node.js) of the local plugin includes detailed comments on the process.
 
