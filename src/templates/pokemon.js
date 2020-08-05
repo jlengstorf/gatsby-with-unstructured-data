@@ -9,7 +9,7 @@ export default ({ pageContext: { pokemon } }) => (
     <ul>
       {pokemon.abilities.map(ability => (
         <li key={ability.name}>
-          <Link to={`./pokemon/${pokemon.name}/ability/${ability.name}`}>
+          <Link to={`/pokemon/${pokemon.name}/ability/${ability.name}`}>
             {ability.name}
           </Link>
         </li>
